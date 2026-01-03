@@ -1,14 +1,14 @@
-package com.sde.ma.non.virtual.controller;
+package com.sde.ma.non.virtual.aggregator.controller;
 
-import com.sde.ma.non.virtual.model.ResponseModel;
-import com.sde.ma.non.virtual.service.AggregatorService;
+import com.sde.ma.non.virtual.aggregator.model.ResponseModel;
+import com.sde.ma.non.virtual.aggregator.service.AggregatorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.sde.ma.non.virtual.AggregatorConstants.*;
+import static com.sde.ma.non.virtual.aggregator.AggregatorConstants.*;
 
 @Slf4j
 @RestController

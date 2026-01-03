@@ -1,6 +1,6 @@
-package com.sde.ma.non.virtual.service;
+package com.sde.ma.non.virtual.aggregator.service;
 
-import com.sde.ma.non.virtual.model.ResponseModel;
+import com.sde.ma.non.virtual.aggregator.model.ResponseModel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

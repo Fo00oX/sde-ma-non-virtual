@@ -1,8 +1,8 @@
-package com.sde.ma.non.downstream.controller;
+package com.sde.ma.non.virtual.downstream.controller;
 
-import com.sde.ma.non.downstream.DownstreamConstants;
-import com.sde.ma.non.downstream.model.MockResponse;
-import com.sde.ma.non.downstream.service.DownstreamService;
+import com.sde.ma.non.virtual.downstream.DownstreamConstants;
+import com.sde.ma.non.virtual.downstream.model.ResponseModel;
+import com.sde.ma.non.virtual.downstream.service.DownstreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DownstreamController {
 
-    private final DownstreamService downstreamService;
+    private final DownstreamService service;
 
     @GetMapping(DownstreamConstants.REQUEST_PATH)
-    public MockResponse request(
+    public ResponseModel request(
             @PathVariable int id,
             @RequestParam(defaultValue = "120") int delay,
             @RequestParam(defaultValue = "2048") int payload
     ) throws InterruptedException {
-        return downstreamService.process(id, delay, payload);
+        return service.process(id, delay, payload);
     }
 }

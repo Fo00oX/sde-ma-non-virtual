@@ -1,4 +1,4 @@
-package com.sde.ma.non.virtual;
+package com.sde.ma.non.virtual.aggregator;
 
 import lombok.RequiredArgsConstructor;
 import static lombok.AccessLevel.PRIVATE;

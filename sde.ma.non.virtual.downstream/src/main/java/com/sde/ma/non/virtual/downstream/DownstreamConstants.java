@@ -1,4 +1,4 @@
-package com.sde.ma.non.downstream;
+package com.sde.ma.non.virtual.downstream;
 
 import lombok.experimental.UtilityClass;
 

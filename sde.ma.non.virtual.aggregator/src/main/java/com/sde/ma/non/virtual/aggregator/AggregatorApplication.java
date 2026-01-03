@@ -1,11 +1,12 @@
-package com.sde.ma.non.downstream;
+package com.sde.ma.non.virtual.aggregator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DownstreamApplication {
+public class AggregatorApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(DownstreamApplication.class, args);
+        SpringApplication.run(AggregatorApplication.class, args);
     }
 }
