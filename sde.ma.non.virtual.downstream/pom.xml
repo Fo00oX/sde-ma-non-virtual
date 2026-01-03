@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sde.ma.non.virtual.aggregator</artifactId>
+    <artifactId>sde.ma.non.virtual.downstream</artifactId>
 
     <dependencies>
         <dependency>

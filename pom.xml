@@ -18,6 +18,7 @@
 
     <modules>
         <module>sde.ma.non.virtual.aggregator</module>
+        <module>sde.ma.non.virtual.downstream</module>
     </modules>
 
     <properties>

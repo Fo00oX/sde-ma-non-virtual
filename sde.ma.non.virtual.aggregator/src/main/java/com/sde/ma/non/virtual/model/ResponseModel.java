@@ -5,5 +5,10 @@ import lombok.extern.jackson.Jacksonized;
 
 @Builder
 @Jacksonized
-public record ResponseModel(String message) {
+public record ResponseModel(
+        int fanOut,
+        int success,
+        int payloadBytes,
+        long durationMs
+) {
 }

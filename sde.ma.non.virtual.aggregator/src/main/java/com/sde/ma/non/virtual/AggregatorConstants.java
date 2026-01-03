@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import static lombok.AccessLevel.PRIVATE;
 
 @RequiredArgsConstructor(access = PRIVATE)
-public class Constants {
+public class AggregatorConstants {
 
     public static final String REQUEST_PATH = "/request";
 

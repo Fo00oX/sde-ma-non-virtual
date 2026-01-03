@@ -1,12 +1,11 @@
-package com.sde.ma.non.virtual;
+package com.sde.ma.non.downstream;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SdeMaNonVirtualApplication {
-
+public class DownstreamApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SdeMaNonVirtualApplication.class, args);
+        SpringApplication.run(DownstreamApplication.class, args);
     }
 }
