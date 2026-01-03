@@ -1,0 +1,7 @@
+services:
+  non-virtual:
+    build:
+      context: .
+      dockerfile: sde.ma.non.virtual.aggregator/Dockerfile
+    ports:
+      - "8080:8080"
