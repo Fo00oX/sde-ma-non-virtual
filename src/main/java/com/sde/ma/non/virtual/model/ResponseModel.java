@@ -1,4 +1,4 @@
-package com.sde.ma.non.virtual.aggregator.model;
+package com.sde.ma.non.virtual.model;
 
 import lombok.Builder;
 import lombok.extern.jackson.Jacksonized;

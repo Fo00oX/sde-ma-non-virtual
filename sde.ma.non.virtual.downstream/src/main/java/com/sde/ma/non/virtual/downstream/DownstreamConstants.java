@@ -1,9 +1,0 @@
-package com.sde.ma.non.virtual.downstream;
-
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
-public class DownstreamConstants {
-    public static final String REQUEST_PATH = "/api/downstream/{id}";
-}
-
