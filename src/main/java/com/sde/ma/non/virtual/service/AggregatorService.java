@@ -1,26 +1,18 @@
 package com.sde.ma.non.virtual.service;
 
 import com.sde.ma.non.virtual.model.ResponseModel;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
-@Slf4j
 @Service
 public class AggregatorService {
-
-    @Value("${downstream.base-url}")
-    private String downstreamBaseUrl;
-    private final HttpClient client = HttpClient.newHttpClient();
 
     public ResponseModel aggregate(int delay, int fanOut, int payload) throws InterruptedException {
 
@@ -29,16 +21,12 @@ public class AggregatorService {
                 Runtime.getRuntime().availableProcessors()
         );
 
-        ExecutorService executor = Executors.newFixedThreadPool(poolSize);
+        try (ExecutorService executor = Executors.newFixedThreadPool(poolSize)) {
 
-        long startNs = System.nanoTime();
+            long startNs = System.nanoTime();
 
-        try {
-            List<Future<Integer>> futures = IntStream
-                    .range(0, fanOut)
-                    .mapToObj(id ->
-                            executor.submit(() -> callDownstream(id, delay, payload))
-                    )
+            List<Future<Integer>> futures = IntStream.range(0, fanOut)
+                    .mapToObj(id -> executor.submit(() -> work(id, delay, payload)))
                     .toList();
 
             int totalBytes = 0;
@@ -47,7 +35,6 @@ public class AggregatorService {
             for (Future<Integer> f : futures) {
                     totalBytes += f.get();
                     success++;
-
             }
 
             long durationMs =
@@ -63,33 +50,35 @@ public class AggregatorService {
         } catch (InterruptedException | ExecutionException e) {
             Thread.currentThread().interrupt();
             throw new InterruptedException(e.getMessage());
-        } finally {
-            executor.shutdown();
         }
     }
 
-    private int callDownstream(int id, int delay, int payload) throws Exception {
+    private int work(int taskId, int delayMs, int payloadBytes) throws InterruptedException {
 
-        Thread t = Thread.currentThread();
-        log.info(
-                "Downstream call id={} on thread={} (id={})",
-                id, t.getName(), t.getId()
-        );
+        int effectiveDelayMs = Math.max(0, delayMs);
+        int effectivePayloadBytes = Math.max(0, payloadBytes);
 
-        String url = String.format(
-                "%s/api/downstream/%d?delay=%d&payload=%d",
-                downstreamBaseUrl, id, delay, payload
-        );
+        if (effectiveDelayMs > 0) {
+            Thread.sleep(effectiveDelayMs);
+        }
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .timeout(Duration.ofSeconds(5))
-                .GET()
-                .build();
+        final int WORK_UNITS_PER_BYTE = 50;
+        long totalIterations = (long) effectivePayloadBytes * WORK_UNITS_PER_BYTE;
 
-        HttpResponse<byte[]> response =
-                client.send(request, HttpResponse.BodyHandlers.ofByteArray());
+        totalIterations = Math.min(totalIterations, 200_000_000L);
 
-        return response.body().length;
+        long mixState = 0x9E3779B97F4A7C15L ^ taskId;
+        mixState ^= (long) effectiveDelayMs << 32;
+        mixState ^= effectivePayloadBytes;
+
+        for (long iteration = 0; iteration < totalIterations; iteration++) {
+            mixState ^= (mixState << 13);
+            mixState ^= (mixState >>> 7);
+            mixState ^= (mixState << 17);
+
+            mixState += iteration;
+        }
+
+        return effectivePayloadBytes + (int) (mixState & 0xFF);
     }
 }
