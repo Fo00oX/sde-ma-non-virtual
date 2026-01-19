@@ -2,8 +2,8 @@ spring:
   application:
     name: sde-ma-non-virtual
 
-downstream:
-  base-url: ${DOWNSTREAM_BASE_URL:http://localhost:8080}
+#downstream:
+#  base-url: ${DOWNSTREAM_BASE_URL:http://localhost:8080}
 
 server:
   port: ${SERVER_PORT:8081}
